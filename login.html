@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <div class="cont">
+        <div class="form sign-in">
+            <h2>Welcome</h2>
+            <label>
+                <span>Email</span>
+                <input type="email" id="loginEmail"/>
+            </label>
+            <label>
+                <span>Password</span>
+                <input type="password" id="loginPassword"/>
+            </label>
+            <label>
+                <span>Are you a customer or a marketing agent?</span>
+                <select id="loginRole">
+                    <option value="customer">Customer</option>
+                    <option value="provider">marketing agent</option>
+                </select>
+            </label>
+            <p class="forgot-pass" id="forgotPassword">Forgot password?</p>
+
+            <button type="button" class="submit">Sign In</button>
+            <span id="signInErrorMessage" style="color: red;"></span>
+        </div>
+        <div class="sub-cont">
+            <div class="img">
+                <div class="img__text m--up">
+                    <h3>Don't have an account? Please Sign up!</h3>
+                </div>
+                <div class="img__text m--in">
+                    <h3>If you already have an account, just sign in.</h3>
+                </div>
+                <div class="img__btn">
+                    <span class="m--up">Sign Up</span>
+                    <span class="m--in">Sign In</span>
+                </div>
+            </div>
+            <div class="form sign-up">
+                <h2>Create your Account</h2>
+                <label>
+                    <span>Name</span>
+                    <input type="text" id="name" />
+                </label>
+                <label>
+                    <span>Email</span>
+                    <input type="email" id="signupEmail" />
+                </label>
+                <label>
+                    <span>Password</span>
+                    <input type="password" id="signupPassword" />
+                </label>
+                <label>
+                    <span>Are you a customer or a marketing agent?</span>
+                    <select id="signupRole">
+                        <option value="customer">Customer</option>
+                        <option value="provider">marketing agent</option>
+                    </select>
+                </label>
+                <span id="signUpErrorMessage" style="color: red;"></span>
+                <button type="button" class="submit">Sign Up</button>
+            </div>
+        </div>
+    </div>
+    <div id="successMessage" style="display: none;">
+        <p>Successfully signed up!</p>
+    </div>
+    <div id="loginSuccessMessage" style="display: none;">
+        <p>Successfully logged in!</p>
+    </div>
+
+    <div id="forgotPasswordModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Reset Password</h2>
+            <label>
+                <span>Email</span>
+                <input type="email" id="resetEmail" />
+            </label>
+            <button type="button" id="resetPasswordButton">Reset Password</button>
+            <span id="resetErrorMessage" style="color: red;"></span>
+        </div>
+    </div>
+
+    <script>
+        document.querySelector('.img__btn').addEventListener('click', function() {
+            document.querySelector('.cont').classList.toggle('s--signup');
+        });
+
+        document.querySelector('.form.sign-up .submit').addEventListener('click', function() {
+            let name = document.getElementById('name').value;
+            let email = document.getElementById('signupEmail').value;
+            let password = document.getElementById('signupPassword').value;
+            let role = document.getElementById('signupRole').value;
+            let errorMessage = document.getElementById('signUpErrorMessage');
+
+            if (name.trim() === '' || email.trim() === '' || password.trim() === '') {
+                errorMessage.textContent = 'All fields are required';
+            } else if (!isValidEmail(email)) {
+                errorMessage.textContent = 'Invalid email address';
+            } else {
+                // Form is valid, submit the form
+                errorMessage.textContent = '';
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('loginEmail').value = email;
+                document.getElementById('loginPassword').value = password;
+                // Add your form submission logic here
+            }
+        });
+
+        document.querySelector('.form.sign-in .submit').addEventListener('click', function() {
+            let loginEmail = document.getElementById('loginEmail').value;
+            let loginPassword = document.getElementById('loginPassword').value;
+            let signUpEmail = document.getElementById('signupEmail').value;
+            let signUpPassword = document.getElementById('signupPassword').value;
+            let loginRole = document.getElementById('loginRole').value;
+            let signUpRole = document.getElementById('signupRole').value;
+            let errorMessage = document.getElementById('signInErrorMessage');
+
+            if (loginEmail !== signUpEmail || loginPassword !== signUpPassword || loginRole !== signUpRole) {
+                errorMessage.textContent = 'Email, password, or role do not match';
+            } else {
+                errorMessage.textContent = '';
+                document.getElementById('loginSuccessMessage').style.display = 'block';
+                // Perform login with loginEmail and loginPassword
+            }
+        });
+
+        document.getElementById('forgotPassword').addEventListener('click', function() {
+            document.getElementById('forgotPasswordModal').style.display = 'block';
+        });
+
+        document.querySelector('#forgotPasswordModal .close').addEventListener('click', function() {
+            document.getElementById('forgotPasswordModal').style.display = 'none';
+        });
+
+        document.getElementById('resetPasswordButton').addEventListener('click', function() {
+            let resetEmail = document.getElementById('resetEmail').value;
+            let resetErrorMessage = document.getElementById('resetErrorMessage');
+
+            // Add your password reset logic here
+
+            // For now, just show a message
+            resetErrorMessage.textContent = 'Password reset link sent to ' + resetEmail;
+        });
+
+        function isValidEmail(email) {
+            // Basic email validation using regular expression
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+    </script>
+</body>
+</html>
